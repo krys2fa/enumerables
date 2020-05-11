@@ -64,4 +64,20 @@ module Enumerable
 
   end
 
+  def my_none?(arg=nil)
+    truthy = 0
+
+    if block_given?
+      self.my_each { |element| truthy += 1 if yield(element) == true }
+    elsif arg != nil && arg.class == Class
+      self.my_each { |element| truthy += 1 if element.is_a? arg }
+    elsif arg != nil && arg.class == Regexp
+      self.my_each { |element| truthy += 1 if element.match(arg) }
+    else
+      self.my_each { |element| truthy += 1 if element == true  }
+    end
+    
+    truthy > 0 ? false : true
+  end
+
 end
