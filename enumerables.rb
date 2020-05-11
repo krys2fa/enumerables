@@ -30,10 +30,20 @@ module Enumerable
     end
   end
 
+  def my_all?(arg = nil)
+    falsey = 0
 
+    if block_given?
+      self.my_each { |element| falsey += 1 if yield(element) == false || yield(element) == nil }
+    elsif arg != nil && arg.class == Class
+      self.my_each { |element| falsey += 1 if !element.is_a? arg }
+    elsif arg != nil && arg.class == Regexp
+      self.my_each { |element| falsey += 1 if !element.match(arg) }
+    else
+      self.my_each { |element| falsey += 1 if element == false || element == nil }
+    end
+    falsey > 0 ? false : true
+
+  end   
 
 end
-
-
-
-
