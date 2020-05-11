@@ -80,4 +80,17 @@ module Enumerable
     truthy > 0 ? false : true
   end
 
+  def my_count(arg=nil)
+    counter = 0
+
+    if block_given?
+      self.my_each { |element| counter += 1 if yield(element) == true }
+    elsif arg != nil
+      self.my_each { |element| counter += 1 if element == arg  }
+    else
+      self.my_each { counter +=1  }
+    end
+    counter
+  end
+
 end
