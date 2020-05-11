@@ -1,7 +1,3 @@
-# rubocop:disable Style/CaseEquality
-
-# rubocop:enable Style/CaseEquality
-
 module Enumerable
   def my_each
     if block_given?
@@ -21,38 +17,23 @@ module Enumerable
     end
   end
 
-
+  def my_select
+    if block_given?
+      if self.is_a? Array
+        output = []
+        self.my_each { |element| output << element if yield(element) }
+      else
+        output = {}
+        self.my_each { |element, value| output[element] = value if yield(element, value) }
+      end
+      output
+    end
+  end
 
 
 
 end
 
 
-arr = [5, 4, 3]
-
-ha = {"one" => 1, "two" => 2}
-
-
-
-# arr.each_with_index { |el, index| puts el, index}
-# arr.each_with_index { |el, index| puts "#{el}, #{index}"}
-#  arr.each_with_index { |el, index| puts "#{self}, #{index}"}
-# (1..5).each_with_index { |el, index| puts "#{el}, #{index}"}
-
-# ha.each
-# ha.each_with_index { |el| puts el}
-# ha.each_with_index { |el| puts "#{el}"}
-# ha.each_with_index { |(k, v), index| puts "answer: #{k} and #{v} and #{index}"}
-
-puts "=========="
-
-# arr.my_each_with_index { |el, index| puts el, index}
-# arr.my_each_with_index { |el, index| puts "#{el}, #{index}"}
-#  arr.my_each_with_index { |el, index| puts "#{self}, #{index}"}
-# (1..5).my_each_with_index { |el, index| puts "#{el}, #{index}"}
-
-# ha.my_each_with_index
-# ha.my_each_with_index { |el| puts el}
-# ha.my_each_with_index { |(k, v), index| puts "answer: #{k} and #{v} and #{index}"}
 
 
