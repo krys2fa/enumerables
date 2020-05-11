@@ -93,4 +93,12 @@ module Enumerable
     counter
   end
 
+  def my_map
+    if block_given?
+      output = []
+      self.my_each { |element| output << element if yield(element) }
+    end
+    output
+  end
+
 end
