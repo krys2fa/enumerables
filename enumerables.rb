@@ -1,5 +1,6 @@
+# rubocop:disable Metrics/ModuleLength
 module Enumerable
-  # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Style/For, Lint/AmbiguousBlockAssociation
+  # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Style/For
   def my_each
     return to_enum unless block_given?
 
@@ -41,7 +42,7 @@ module Enumerable
     elsif !arg.nil? && arg.class == Regexp
       my_each { |element| falsey += 1 unless element.match(arg) }
     elsif !arg.nil?
-      my_each { |element| falsey += 1 if arg != element}
+      my_each { |element| falsey += 1 if arg != element }
     else
       my_each { |element| falsey += 1 if element == false || element.nil? }
     end
@@ -59,7 +60,7 @@ module Enumerable
     elsif !arg.nil? && arg.class == Regexp
       my_each { |element| truthy += 1 if element.match(arg) }
     elsif !arg.nil?
-      my_each { |element| truthy += 1 if arg == element}
+      my_each { |element| truthy += 1 if arg == element }
     else
       my_each { |element| truthy += 1 if element != false && !element.nil? }
     end
@@ -99,43 +100,62 @@ module Enumerable
 
   def my_map
     output = []
-    if block_given?
-      my_each { |element| output << yield(element) || output << proc.call(element) }
-    else
-      return to_enum
-    end
+    return to_enum unless block_given?
+
+    my_each { |element| output << yield(element) || output << proc.call(element) }
     output
   end
+
+  # def my_inject1(*args)
+  #   output = []
+  #   operator = nil
+
+  #   if args.length > 1
+  #     args.my_each do |element|
+  #       if element.is_a? Symbol
+  #         operator = element
+  #       else
+  #         output << element
+  #       end
+  #     end
+  #     reduce { |memo, element| memo.send(operator, element) }
+  #   else
+  #     if args[0].is_a? Symbol
+  #       reduce { |memo, element| memo.send(args[0], element) }
+  #     else
+  #       memo = args[0]
+  #       my_each { |element| memo.nil? ? memo = element : memo = yield(memo, element) } if block_given?
+  #       memo
+  #     end
+  #   end
+  # end
 
   def my_inject(*args)
     output = []
     operator = nil
 
     if args.length > 1
-      args.my_each do |element| 
+      args.my_each do |element|
         if element.is_a? Symbol
           operator = element
-        else 
-          output << element 
+        else
+          output << element
         end
       end
       reduce { |memo, element| memo.send(operator, element) }
-    else
-      if args[0].is_a? Symbol
-        reduce { |memo, element| memo.send(args[0], element) }
-      else
-        memo = args[0]
-        my_each { |element| memo.nil? ? memo = element : memo = yield(memo, element) } if block_given?
-        memo
-      end
-    end
-    
-  end
 
+    elsif (args.length < 2) && (args[0].is_a? Symbol)
+      reduce { |memo, element| memo.send(args[0], element) }
+    else
+      memo = args[0]
+      my_each { |element| memo = memo.nil? ? element : yield(memo, element) } if block_given?
+      memo
+    end
+  end
 end
 
 def multiply_els(arr)
   arr.my_inject(:*)
 end
 
-# rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Style/For, Lint/AmbiguousBlockAssociation
+# rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity, Style/For, Metrics/ModuleLength
