@@ -101,4 +101,19 @@ module Enumerable
     output
   end
 
+  def my_inject(arg=nil)
+
+    if arg.is_a? Symbol
+      reduce { |memo, element| memo.send(arg, element) }
+    else
+      memo = arg
+      self.my_each { |element| memo.nil? ? memo = element : memo = yield(memo, element) }
+    end
+
+    memo
+  end
+
+  # def multiply_els
+  # end
+
 end
