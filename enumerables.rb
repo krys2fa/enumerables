@@ -94,9 +94,11 @@
     end
 
     def my_map
+      output = []
       if block_given?
-        output = []
         self.my_each { |element| output << element if yield(element) }
+      else
+        self.my_each { |element| output << proc.call(element) }
       end
       output
     end
