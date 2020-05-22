@@ -157,7 +157,7 @@ describe Enumerable do
 
     it 'should return true if no block or argument passed and
       the method returns false for all elements' do
-      expect([nil, false, true].my_none? ).to eql(false)
+      expect([nil, false, true].my_none?).to eql(false)
     end
   end
 
