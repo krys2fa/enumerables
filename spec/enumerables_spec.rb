@@ -76,6 +76,12 @@ describe Enumerable do
         .to eql(%w[ant bear cat].all? { |word| word.length >= 4 })
     end
 
+    it 'should return true if there a block is passed without an argument and the array elements
+      never return false or nil' do
+      expect(%w[ant bear cat].my_all? { |word| word.length >= 3 })
+        .to eql(%w[ant bear cat].all? { |word| word.length >= 3 })
+    end
+
     it 'should return true if array is empty and no block or argument passed and the array
       elements never return false or nil' do
       expect([].my_all?).to eql([].all?)
@@ -102,6 +108,12 @@ describe Enumerable do
       array elements return a value other than false or nil' do
       expect(%w[ant bear cat].my_any? { |word| word.length >= 4 })
         .to eql(%w[ant bear cat].any? { |word| word.length >= 4 })
+    end
+
+    it 'should return true if there a block is passed without an argument and the
+      array elements return a value other than false or nil' do
+      expect(%w[ant bear cat].my_any? { |word| word.length >= 3 })
+        .to eql(%w[ant bear cat].any? { |word| word.length >= 3 })
     end
 
     it 'should return true if array is empty and no block or argument passed and
@@ -132,9 +144,20 @@ describe Enumerable do
         .to eql(%w[ant bear cat].none? { |word| word.length >= 4 })
     end
 
+    it 'should return true if there a block is passed without an argument and the
+      method returns true if the block never returns true for all elements' do
+      expect(%w[ant bear cat].my_none? { |word| word.length == 5 })
+        .to eql(true)
+    end
+
     it 'should return true if array is empty and no block or argument passed and
       the method returns true if the block never returns true for all elements' do
       expect([].my_none?).to eql([].none?)
+    end
+
+    it 'should return true if no block or argument passed and
+      the method returns false for all elements' do
+      expect([nil, false, true].my_none? ).to eql(false)
     end
   end
 
