@@ -18,6 +18,12 @@ This is a Microverse project on the implementation of a number of Ruby enumerabl
 - Clone or download the repository to your local machine.
 - Happy coding!
 
+### Testing
+
+ - cd into the folder of the project.
+ - install rspec by running the following command in the terminal `gem install rspec`.
+ - run `rspec` on the teminal run the test.
+
 ## Authors
 
 👤 **Christopher Amanor**
